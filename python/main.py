@@ -2,7 +2,7 @@ import random
 import time 
 from math import sqrt
 
-def calculator():
+def calculator(): # Simple calculator function
     while True: 
         print("Simple Calculator")
         print("Select operation: ")
@@ -41,29 +41,41 @@ def calculator():
             case _:
                 print("Invalid input")
 
-    
-def generator():
-    length = int(input("Enter the length of the password: "))
-    print("Do you need only letters, numbers, or symbols?")
-    choice = input("Enter 'l' for letters, 'n' for numbers, 's' for symbols, 'a' for all: ")
-    if choice == 'l':
-        characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    elif choice == 'n':
-        characters = "0123456789"
-    elif choice == 's':
-        characters = "!@#$%^&*()"
-    else:
-        characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()"
-    password = "".join(random.choices(characters, k=length))
-    print("Generated password is:", password)
-    if password:
-        with open("password.txt", "a") as f:
-            f.write(password + "\n")
-            print("Password saved to password.txt")
+
+class PasswordGenerator: # Password generator class
+    def __init__(self, length, choice):
+        self.length = length
+        self.choice = choice
+
+    def generate(self):
+        self.length = int(input("Enter password length: "))
+        print("Select password type:")
+        print("l - Letters only")
+        print("n - Numbers only")
+        print("s - Special characters only")
+        print("a - All characters")
+        self.choice = input("Enter your choice (l/n/s/a): ").lower()
+        characters = ""
+        if self.choice == 'l':
+            characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        elif self.choice == 'n':
+            characters = "0123456789"
+        elif self.choice == 's':
+            characters = "!@#$%^&*()"
+        else:
+            characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()"
+        password = "".join(random.choices(characters, k=self.length))
+        
+        if password:
+            with open("password.txt", "a") as f:
+                f.write(password + "\n")
+                print("Password saved to password.txt")
+            return password
+
     
 
 
-class Person:
+class Person: # Person class for introduction simple OOP example
     def __init__(self, name, age, city):
         self.name = name
         self.age = age
@@ -74,9 +86,20 @@ class Person:
         self.city = input("Enter your city: ")
         print(f"Hello, my name is {self.name}, I am {self.age} years old and I live in {self.city}.")
 
+class Hobby:
+    def __init__(self, hobby_name, years_practiced):
+        self.hobby_name = hobby_name
+        self.years_practiced = years_practiced
+        self.years_practiced = 0
+    def describe_hobby(self):
+        self.hobby_name = input("Enter your hobby:")
+        self.years_practiced = input("Enter years practiced: ")
+        if not self.years_practiced.isdigit():
+            print("Please enter a valid number for years practiced.")
+            return
+        print(f"My hobby is {self.hobby_name} and I have been practicing it for {self.years_practiced} years.")
 
-
-def select_menu():
+def select_menu(): # Menu to select different functionalities
     while True:
        print("Welcome to the Selector")
        print("1. Generate Password")
@@ -88,16 +111,24 @@ def select_menu():
         break
        match choice:
           case 1:
-            generator()
+            password_gen = PasswordGenerator(0, "")
+            password = password_gen.generate()
+            if password:
+                print(f"Generated Password: {password}")
+            break
           case 2:
             calculator()
+            break
           case 3:
             person = Person("", "", "")
             person.introduce()
+            hobby = Hobby("", 0)
+            hobby.describe_hobby()
+            break
           case 4:
             print("Exiting...")
             time.sleep(1)
-            return
+            break
           case _:
             print("Invalid choice, please try again.")
 select_menu()
