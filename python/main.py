@@ -69,9 +69,12 @@ class PasswordGenerator: # Password generator class
                 characters = "!@#$%^&*()"
             case 'a':
                 characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()"
+            case _:
+                print("Invalid choice")
+                return None
+            
         password = "".join(random.choices(characters, k=self.length))
         print(f"Generated password: {password}")
-
 
         with open("history/password_history.txt", "a") as f:
                 f.write(password + "\n")
@@ -79,8 +82,6 @@ class PasswordGenerator: # Password generator class
 
 
     
-
-
 class Person: # Person class for introduction simple OOP example
     def __init__(self, name, age, city, hobby, years_practiced):
         self.name = name
@@ -121,7 +122,7 @@ class Currency_Converter: # Currency converter using API
             print("Такой валюты нет.")
             return
 
-        # Конвертация: сначала → USD, потом → нужную валюту
+        # Сonversion calculation
         amount_in_usd = amount / rates[from_val]
         result = amount_in_usd * rates[to_val]
 
@@ -136,6 +137,37 @@ class Currency_Converter: # Currency converter using API
             f.write(f"{amount} {from_val} = {result} {to_val}\n")
         print("Conversion saved to history/conversion_history.txt")
 
+class Temperature_Converter: # Simple temperature converter class
+    def __init__(self, choice, temp):
+        self.choice = choice
+        self.temp = temp
+
+    def convert(self):
+        print("Select conversion type:")
+        print("1. Celsius to Fahrenheit")
+        print("2. Fahrenheit to Celsius")
+        
+        self.choice = int(input("Enter your choice (1/2): "))
+        self.temp = float(input("Enter the temperature: "))
+
+        if self.choice == 1:
+            result = (self.temp * 9/5) + 32
+            print(f"{self.temp}°C is {result}°F")
+            text = f"{self.temp}°C is {result}°F"
+
+        elif self.choice == 2:
+            result = (self.temp - 32) * 5/9
+            print(f"{self.temp}°F is {result}°C")
+            text = f"{self.temp}°F is {result}°C"
+
+        else:
+            print("Invalid choice")
+            return
+        # Save to history
+        with open("history/weather_history.txt", "a") as f:
+            f.write(text + "\n" + self.choice)
+        print("Conversion saved to history/weather_history.txt")
+     
 
 
 def select_menu(): # Menu to select different functionalities
@@ -145,9 +177,10 @@ def select_menu(): # Menu to select different functionalities
        print("2. Simple Calculator")
        print("3. Person Introduction")
        print("4. Currency Converter")
-       print("5. Exit")
+       print("5. Temperature Converter")
+       print("6. Exit")
        choice = int(input("Enter your choice: "))
-       if choice == 5:
+       if choice == 6:
         break
        match choice:
           case 1:
@@ -166,6 +199,10 @@ def select_menu(): # Menu to select different functionalities
           case 4:
             converter = Currency_Converter()
             converter.convert()
+            break
+          case 5:
+            temperature_converter = Temperature_Converter(0, 0.0)
+            temperature_converter.convert()
             break
           case _:
             print("Invalid choice, please try again.")
