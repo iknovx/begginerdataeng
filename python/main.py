@@ -1,7 +1,7 @@
 import random
 import requests
 from math import sqrt
-import json
+import json 
 
 
 
@@ -45,12 +45,13 @@ def calculator(): # Simple calculator function
                 print("Invalid input")
 
 
+
 class PasswordGenerator: # Password generator class
     def __init__(self, length, choice):
         self.length = length
         self.choice = choice
 
-    def generate(self):
+    def generate(self):       
         self.length = int(input("Enter password length: "))
         print("Select password type:")
         print("l - Letters only")
@@ -59,53 +60,51 @@ class PasswordGenerator: # Password generator class
         print("a - All characters")
         self.choice = input("Enter your choice (l/n/s/a): ").lower()
         characters = ""
-        if self.choice == 'l':
-            characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        elif self.choice == 'n':
-            characters = "0123456789"
-        elif self.choice == 's':
-            characters = "!@#$%^&*()"
-        else:
-            characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()"
+        match self.choice:
+            case 'l':
+                characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+            case 'n':
+                characters = "0123456789"
+            case 's':
+                characters = "!@#$%^&*()"
+            case 'a':
+                characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()"
         password = "".join(random.choices(characters, k=self.length))
-        
-        if password:
-            with open("password.txt", "a") as f:
+        print(f"Generated password: {password}")
+
+
+        with open("history/password_history.txt", "a") as f:
                 f.write(password + "\n")
-                print("Password saved to password.txt")
-            return password
+                print("Password saved to history/password_history.txt")
+
 
     
 
 
 class Person: # Person class for introduction simple OOP example
-    def __init__(self, name, age, city):
+    def __init__(self, name, age, city, hobby, years_practiced):
         self.name = name
         self.age = age
         self.city = city
+        self.hobby = hobby
+        self.years_practiced = years_practiced
     def introduce(self):
         self.name = input("Enter your name: ")
         self.age = input("Enter your age: ")
         self.city = input("Enter your city: ")
-        print(f"Hello, my name is {self.name}, I am {self.age} years old and I live in {self.city}.")
-
-
-
-class Hobby: # Hobby class for describing hobbies
-    def __init__(self, hobby_name, years_practiced):
-        self.hobby_name = hobby_name
-        self.years_practiced = years_practiced
-        self.years_practiced = 0
-    def describe_hobby(self):
-        self.hobby_name = input("Enter your hobby:")
+        self.hobby = input("Enter your hobby: ")
         self.years_practiced = input("Enter years practiced: ")
         if not self.years_practiced.isdigit():
             print("Please enter a valid number for years practiced.")
             return
-        print(f"My hobby is {self.hobby_name} and I have been practicing it for {self.years_practiced} years.")
+        
+        print(f"Hello, my name is {self.name}, I am {self.age} years old and I live in {self.city}. My hobby is {self.hobby} and I have been practicing it for {self.years_practiced} years.")
+        with open("history/user_history.txt", "a") as f:
+            f.write(f"Name: {self.name}, Age: {self.age}, City: {self.city}, Hobby: {self.hobby}, Years Practiced: {self.years_practiced}\n")
+            print("Introduction saved to history/user_history.txt")
 
 
-class Currency_Converter:
+class Currency_Converter: # Currency converter using API
     def __init__(self):
         self.api_url = "https://api.exchangerate-api.com/v4/latest/USD"
 
@@ -126,16 +125,18 @@ class Currency_Converter:
         amount_in_usd = amount / rates[from_val]
         result = amount_in_usd * rates[to_val]
 
-        # Сохраняем JSON красиво
+        # Saving data to JSON file
         with open("data.json", "w") as f:
             json.dump(data, f, indent=4, ensure_ascii=False)
 
         print(f"{amount} {from_val} = {result} {to_val}")
 
-        # Сохраняем историю конвертаций
-        with open("conversion_history.txt", "a") as f:
+        # Saving conversion history
+        with open("history/conversion_history.txt", "a") as f:
             f.write(f"{amount} {from_val} = {result} {to_val}\n")
-        print("Conversion saved to conversion_history.txt")
+        print("Conversion saved to history/conversion_history.txt")
+
+
 
 def select_menu(): # Menu to select different functionalities
     while True:
@@ -143,7 +144,8 @@ def select_menu(): # Menu to select different functionalities
        print("1. Generate Password")
        print("2. Simple Calculator")
        print("3. Person Introduction")
-       print("4. Exit")
+       print("4. Currency Converter")
+       print("5. Exit")
        choice = int(input("Enter your choice: "))
        if choice == 5:
         break
@@ -158,10 +160,8 @@ def select_menu(): # Menu to select different functionalities
             calculator()
             break
           case 3:
-            person = Person("", "", "")
+            person = Person("", "", "", "", 0)
             person.introduce()
-            hobby = Hobby("", 0)
-            hobby.describe_hobby()
             break
           case 4:
             converter = Currency_Converter()
