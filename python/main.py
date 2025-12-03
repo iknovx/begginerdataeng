@@ -1,6 +1,9 @@
 import random
-import time 
+import requests
 from math import sqrt
+import json
+
+
 
 def calculator(): # Simple calculator function
     while True: 
@@ -86,7 +89,9 @@ class Person: # Person class for introduction simple OOP example
         self.city = input("Enter your city: ")
         print(f"Hello, my name is {self.name}, I am {self.age} years old and I live in {self.city}.")
 
-class Hobby:
+
+
+class Hobby: # Hobby class for describing hobbies
     def __init__(self, hobby_name, years_practiced):
         self.hobby_name = hobby_name
         self.years_practiced = years_practiced
@@ -98,6 +103,39 @@ class Hobby:
             print("Please enter a valid number for years practiced.")
             return
         print(f"My hobby is {self.hobby_name} and I have been practicing it for {self.years_practiced} years.")
+
+
+class Currency_Converter:
+    def __init__(self):
+        self.api_url = "https://api.exchangerate-api.com/v4/latest/USD"
+
+    def convert(self):
+        amount = float(input("Введите сумму: "))
+        from_val = input("Из валюты (USD/EUR/GBP/TRY/RUB/BYN/CNY): ").upper()
+        to_val = input("В валюту (USD/EUR/GBP/TRY/RUB/BYN/CNY): ").upper()
+
+        response = requests.get(self.api_url)
+        data = response.json()
+        rates = data['rates']
+
+        if from_val not in rates or to_val not in rates:
+            print("Такой валюты нет.")
+            return
+
+        # Конвертация: сначала → USD, потом → нужную валюту
+        amount_in_usd = amount / rates[from_val]
+        result = amount_in_usd * rates[to_val]
+
+        # Сохраняем JSON красиво
+        with open("data.json", "w") as f:
+            json.dump(data, f, indent=4, ensure_ascii=False)
+
+        print(f"{amount} {from_val} = {result} {to_val}")
+
+        # Сохраняем историю конвертаций
+        with open("conversion_history.txt", "a") as f:
+            f.write(f"{amount} {from_val} = {result} {to_val}\n")
+        print("Conversion saved to conversion_history.txt")
 
 def select_menu(): # Menu to select different functionalities
     while True:
@@ -126,8 +164,8 @@ def select_menu(): # Menu to select different functionalities
             hobby.describe_hobby()
             break
           case 4:
-            print("Exiting...")
-            time.sleep(1)
+            converter = Currency_Converter()
+            converter.convert()
             break
           case _:
             print("Invalid choice, please try again.")
