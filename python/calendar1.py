@@ -18,3 +18,7 @@ def display_calendar():
                 print(f"The month is: {month_name} is {month}\n")             
                 print(f"{cal.formatmonth(year, month)}")
 
+                with open("history/calendar_history.txt", "a") as f:
+                    f.write(f"Calendar for {month_name} {year}:\n")
+                    f.write(f"{cal.formatmonth(year, month)}\n")
+    print("Calendar saved to history/calendar_history.txt")
