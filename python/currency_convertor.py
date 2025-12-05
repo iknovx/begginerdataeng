@@ -34,4 +34,6 @@ class Currency_Converter: # Currency converter using API
             f.write(f"{amount} {from_val} = {result} {to_val}\n")
         print("Conversion saved to history/conversion_history.txt")
 
-  
+        return result
+    
+
