@@ -3,6 +3,8 @@ from python.password_generator import PasswordGenerator
 from python.currency_convertor import Currency_Converter
 from python.calculator import calculator
 from python.person import Person
+from python.calendar1 import display_calendar 
+
 
 
 
@@ -14,31 +16,33 @@ def select_menu(): # Menu to select different functionalities
        print("3. Person Introduction")
        print("4. Currency Converter")
        print("5. Temperature Converter")
-       print("6. Exit")
+       print("6. Calendar")
+       print("7. Exit")
        choice = int(input("Enter your choice: "))
-       if choice == 6:
-        break
        match choice:
-          case 1:
+          case 1: # Made with class(OOP)
             password_gen = PasswordGenerator(0, "")
             password = password_gen.generate()
-            if password:
+            if password: 
                 print(f"Generated Password: {password}")
             break
-          case 2:
+          case 2: # Made with simple function
             calculator()
             break
-          case 3:
+          case 3: # Made with class(OOP)
             person = Person("", "", "", "", 0)
             person.introduce()
             break
-          case 4:
+          case 4: # Made with class(OOP)
             converter = Currency_Converter()
             converter.convert()
             break
-          case 5:
+          case 5: # Made with class(OOP)
             temperature_converter = Temperature_Converter(0, 0.0)
             temperature_converter.convert()
+            break
+          case 6: # Made with simple function
+            display_calendar()
             break
           case _:
             print("Invalid choice, please try again.")
