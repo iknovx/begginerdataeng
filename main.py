@@ -1,3 +1,4 @@
+import json
 from python.temperature_conversion import Temperature_Converter
 from python.password_generator import PasswordGenerator 
 from python.currency_convertor import Currency_Converter
@@ -5,6 +6,7 @@ from python.calculator import calculator
 from python.person import Person
 from python.calendar1 import display_calendar 
 from python.school_class import SchoolClasses
+from python.shop import Shop
 
 
 
@@ -47,6 +49,10 @@ def select_menu(): # Menu to select different functionalities
           case 7:
             school_classes = SchoolClasses("", "", 0)
             school_classes.class_info()
+            break
+          case 8:
+            shop = Shop("", 0.0, 0)
+            shop.product_info()
             break
           case _:
             print("Invalid choice, please try again.")
