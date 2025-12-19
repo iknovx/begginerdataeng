@@ -1,4 +1,4 @@
-class Shop:
+class Shop: # Made with class(OOP)
     def __init__(self, name, price, quantity, products):
         self.name = name
         self.price = price
